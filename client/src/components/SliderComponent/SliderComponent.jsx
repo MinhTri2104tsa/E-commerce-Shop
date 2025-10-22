@@ -8,7 +8,7 @@ const SliderComponent = ({ arrImages }) => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        autoPlay: true,
+        autoplay: true,
         autoplaySpeed: 1000,
 
       };
