@@ -5,8 +5,9 @@ import {
   WrapperPriceText,
   WrapperReportText,
   WrapperCardStyle
-} from "../SliderComponent/style";
+} from "../CardComponent/style";
 import { StarFilled } from "@ant-design/icons";
+import { WrapperStyleTextSell } from "./style";
 
 const CardComponent = () => {
   return (
@@ -28,7 +29,7 @@ const CardComponent = () => {
           <span>4.95 </span>
           <StarFilled style={{ fontSize: "12px", color: "yellow" }} />
         </span>
-        <span>| Da ban 1000+</span>
+        <WrapperStyleTextSell>| Da ban 1000+</WrapperStyleTextSell>
       </WrapperReportText>
       <WrapperPriceText>10.000.000 VND
         <WrapperDiscountText>-5%</WrapperDiscountText>
