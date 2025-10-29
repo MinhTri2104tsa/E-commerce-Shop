@@ -1,7 +1,11 @@
-const routes = (app) => {
-    app.use('/api/user', (req, res) =>{
-        // res.send('User page')
-    })
-}
+const express = require('express');
+const UserController = require('../controllers/UserController');
+const router = express.Router();
 
-module.exports = routes
+router.post('/', UserController.createUser);
+
+const routes = (app) => {
+    app.use('/api/user', router);
+};
+
+module.exports = routes;
