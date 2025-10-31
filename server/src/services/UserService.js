@@ -103,8 +103,62 @@ const updateUser = (id,data) => {
     }
   });
 };
+
+const deleteUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkUser = await User.findOne({
+        _id: id
+      })
+      
+      await User.findByIdAndUpdate(id)
+      resolve({
+        status: "OK",
+        message: "Delete user success",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllUser = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allUser = await User.find()
+      resolve({
+        status: "OK",
+        message: "success",
+        data: allUser
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getDetailsUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user = await User.findOne({
+        _id: id
+      })
+      
+      resolve({
+        status: "OK",
+        message: "success",
+        data: user
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   createUser,
   loginUser,
-  updateUser
+  updateUser,
+  deleteUser,
+  getAllUser,
+  getDetailsUser
 };
