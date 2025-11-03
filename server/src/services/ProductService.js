@@ -1,42 +1,130 @@
 const Product = require("../models/ProductModel");
-const bcrypt = require("bcrypt");
-
-const createProduct = (newUser) => {
+ 
+const createProduct = (newProduct) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, password, phone } = newUser;
+    const { name, image, type, countInStock, price, rating, description } =newProduct;
+
     try {
-    //   const checkUser = await User.findOne({
-    //     email: email,
-    //   });
-    //   if (checkUser !== null) {
-    //     resolve({
-    //       status: "OK",
-    //       message: "The email is already",
-    //     });
-    //   }
-    //   const hash = bcrypt.hashSync(password, 10);
-    //   console.log("hash", hash);
-    //   const createdUser = await User.create({
-    //     name,
-    //     email,
-    //     password: hash,
-    //     phone,
-    //   });
-    //   if (createdUser) {
-    //     resolve({
-    //       status: "OK",
-    //       message: "SUCCESS",
-    //       data: createdUser,
-    //     });
-    //   }
+      const checkProduct = await Product.findOne({
+        name: name,
+      });
+      if (checkProduct !== null) {
+        resolve({
+          status: "OK",
+          message: "The name of product is already",
+        });
+      }
+      const createProduct = await Product.create({
+        name,
+        image,
+        type,
+        countInStock,
+        price,
+        rating,
+        description,
+      });
+      if (createProduct) {
+        resolve({
+          status: "OK",
+          message: "SUCCESS",
+          data: createProduct,
+        });
+      }
     } catch (e) {
       reject(e);
     }
   });
 };
 
+const updateProduct = (id,data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findOne({
+        _id: id
+      })
+      if (checkUser == null) {
+        return resolve({
+          status: "OK",
+          message: "The product is not define",
+        });
+      }
+      const updateProduct = await User.findByIdAndUpdate(id,data, {new: true})
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: updateProduct
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
+const deleteProduct = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findOne({
+        _id: id
+      })
+      if(checkProduct === null){
+        resolve({
+          status: 'OK',
+          message: 'The product is not defined'
+        })
+      }
+      await Product.findByIdAndUpdate(id)
+      resolve({
+        status: "OK",
+        message: "Delete product success",
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllProduct = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allProduct = await Product.find()
+      resolve({
+        status: "OK",
+        message: "success",
+        data: allProduct
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getDetailsProduct = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const product = await Product.findOne({
+        _id: id
+      })
+      if(product === null){
+        resolve({
+          status: 'OK',
+          message: 'The product is not defined'
+        })
+      }
+      resolve({
+        status: "OK",
+        message: "success",
+        data: product
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 module.exports = {
-  createProduct
+  createProduct,
+  updateProduct,
+  getDetailsProduct,
+  deleteProduct,
+  getAllProduct
 };

@@ -1,30 +1,16 @@
-const UserService = require("../services/UserService");
-const JWTService = require("../services/JwtServer");
-
+const ProductService = require('../services/ProductService')
 
 const createProduct = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword, phone } = req.body;
-    const reg =   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    const isCheckEmail = reg.test(email)
-    if(!name || !email || !password || !confirmPassword || !phone){
+    const { name, image, type, countInStock, price, rating, description } = req.body;
+
+    if(!name || !image || !type || !countInStock || !price || !rating){
         return res.status(200).json({
             status: 'ERR',
             message: 'The input is required'
         })
-    }else if(!isCheckEmail){
-        return res.status(200).json({
-            status: 'ERR',
-            message: 'The input is email'
-        })
-    }else if(password !== confirmPassword){
-        return res.status(200).json({
-            status: 'ERR',
-            message: 'The password is equal'
-        })
     }
-    console.log('isCheckEmail', isCheckEmail)
-    const response = await UserService.createUser(req.body);
+    const response = await ProductService.createProduct(req.body);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -33,8 +19,75 @@ const createProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id
+    const data = req.body
+    if(!productId){
+      return res.status(200).json({
+            status: 'ERR',
+            message: 'The userId is required'
+        })
+    }
+    const response = await ProductService.updateProduct(productId,data);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 
+const getDetailsProduct = async (req, res) => {
+  try {
+    const productId = req.params.id
+    if(!productId){
+      return res.status(200).json({
+            status: 'ERR',
+            message: 'The productId is required'
+        })
+    }
+    const response = await ProductService.getDetailsProduct(productId);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 
+const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id
+    if(!productId){
+      return res.status(200).json({
+            status: 'ERR',
+            message: 'The userId is required'
+        })
+    }
+    const response = await ProductService.deleteProduct(productId);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
+const getAllProduct = async (req, res) => {
+  try {
+    const response = await ProductService.getAllProduct();
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
 module.exports = {
-  createProduct
+  createProduct,
+  updateProduct,
+  getDetailsProduct,
+  deleteProduct,
+  getAllProduct
 };
